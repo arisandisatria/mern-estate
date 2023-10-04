@@ -1,6 +1,7 @@
 import express from "express";
 import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
+import userRouter from './routes/user.route.js'
 
 const app = express();
 
@@ -16,3 +17,6 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+
+
+app.use('/api/user', userRouter)

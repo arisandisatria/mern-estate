@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { signinStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
 import Oauth from '../components/Oauth'
 
 export default function SignIn() {
@@ -24,7 +24,7 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      dispatch(signinStart())
+      dispatch(signInStart())
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: {

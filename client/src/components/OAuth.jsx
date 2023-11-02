@@ -23,7 +23,7 @@ export default function Oauth() {
         body: JSON.stringify({
           name: result.user.displayName,
           email: result.user.email,
-          photo: result.user.photoURL,
+          photo: result.user.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         }),
       });
       const data = await res.json();

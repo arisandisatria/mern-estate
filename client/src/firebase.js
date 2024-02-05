@@ -10,8 +10,9 @@ const firebaseConfig = {
   projectId: "mern-estate-3a8f5",
   storageBucket: "mern-estate-3a8f5.appspot.com",
   messagingSenderId: "722288032849",
-  appId: "1:722288032849:web:9283c46feab951a1940c70"
+  appId: "1:722288032849:web:9283c46feab951a1940c70",
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+// Your web app's Firebase configuration

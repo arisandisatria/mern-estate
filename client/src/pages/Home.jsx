@@ -5,6 +5,7 @@ import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import ListingItem from "../components/ListingItem.jsx";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
@@ -12,15 +13,12 @@ export default function Home() {
   const [saleListings, setSaleListings] = useState([]);
   SwiperCore.use([Navigation]);
 
-  console.log(saleListings);
-
   useEffect(() => {
     const fetchOfferListings = async () => {
       try {
         const res = await fetch("/api/listing/get?offer=true&limit=4");
         const data = await res.json();
         setOfferListings(data);
-        fetchRentListings();
       } catch (error) {
         console.log(error.message);
       }
@@ -31,7 +29,6 @@ export default function Home() {
         const res = await fetch("/api/listing/get?type=rent&limit=4");
         const data = await res.json();
         setRentListings(data);
-        fetchSaleListings();
       } catch (error) {
         console.log(error.message);
       }
@@ -47,12 +44,42 @@ export default function Home() {
       }
     };
 
+    fetchRentListings();
+    fetchSaleListings();
     fetchOfferListings();
   }, []);
 
+  if (
+    offerListings.length == 0 ||
+    rentListings.length == 0 ||
+    saleListings.length == 0
+  ) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <AiOutlineLoading3Quarters size={120} className="animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="flex flex-col gap-6 p-10 px-2 max-w-6xl mx-auto">
+      <Swiper navigation>
+        {offerListings &&
+          offerListings.length > 0 &&
+          offerListings.map((listing) => (
+            <SwiperSlide key={listing._id}>
+              <div
+                style={{
+                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
+                  backgroundSize: "cover",
+                }}
+                className="h-[500px]"
+              ></div>
+            </SwiperSlide>
+          ))}
+      </Swiper>
+
+      <div className="flex flex-col items-center justify-center text-center gap-6 p-10 px-2 w-full max-w-6xl mx-auto">
         <h1 className="text-slate-700 font-bold text-3xl lg:text-6xl">
           Find your next <span className="text-slate-500">perfect</span>
           <br />
@@ -71,22 +98,6 @@ export default function Home() {
           Let's get started...
         </Link>
       </div>
-
-      <Swiper navigation>
-        {offerListings &&
-          offerListings.length > 0 &&
-          offerListings.map((listing) => (
-            <SwiperSlide key={listing._id}>
-              <div
-                style={{
-                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
-                  backgroundSize: "cover",
-                }}
-                className="h-[500px]"
-              ></div>
-            </SwiperSlide>
-          ))}
-      </Swiper>
 
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10">
         {offerListings && offerListings.length > 0 && (
